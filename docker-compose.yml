@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres
+    restart: on-failure
+    environment:
+      POSTGRES_USER: rockelivery
+      POSTGRES_PASSWORD: rockelivery
+      POSTGRES_DB: rockelivery_db
+    command: ['-c', 'max_connections=200']
+    ports:
+      - 5432:5432
