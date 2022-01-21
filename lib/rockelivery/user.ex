@@ -24,9 +24,17 @@ defmodule Rockelivery.User do
   end
 
   def changeset(params) do
-    %__MODULE__{}
-    |> cast(params, @required_params)
-    |> validate_required(@required_params)
+    changeset_intern(%__MODULE__{}, params, @required_params)
+  end
+
+  def changeset(struct, params) do
+    changeset_intern(struct, params, @required_params -- [:password])
+  end
+
+  defp changeset_intern(struct, params, required_fields) do
+    struct
+    |> cast(params, required_fields)
+    |> validate_required(required_fields)
     |> validate_length(:password, min: 6)
     |> validate_length(:cep, is: 8)
     |> validate_length(:cpf, is: 11)
