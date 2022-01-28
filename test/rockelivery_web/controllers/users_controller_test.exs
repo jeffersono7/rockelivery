@@ -3,6 +3,8 @@ defmodule RockeliveryWeb.UsersControllerWeb do
 
   import Rockelivery.Factory
 
+  alias Rockelivery.User
+
   describe "create/2" do
     test "when all params are valid, creates the user", %{conn: conn} do
       params = build(:user_params)
@@ -43,6 +45,19 @@ defmodule RockeliveryWeb.UsersControllerWeb do
       }
 
       assert expected_response == response
+    end
+  end
+
+  describe "delete/2" do
+    test "when there is a user with the given id, deletes the user", %{conn: conn} do
+      %User{id: id} = insert(:user)
+
+      response =
+        conn
+        |> delete(Routes.users_path(conn, :delete, id))
+        |> response(:no_content)
+
+        assert response == ""
     end
   end
 end
