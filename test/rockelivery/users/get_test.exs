@@ -4,7 +4,7 @@ defmodule Rockelivery.Users.GetTest do
   import Rockelivery.Factory
 
   alias Ecto.UUID
-  alias Rockelivery.Error
+  alias Rockelivery.{Error, User}
   alias Rockelivery.Users.Get
 
   describe "by_id/1" do
@@ -19,13 +19,12 @@ defmodule Rockelivery.Users.GetTest do
     end
 
     test "when user exists, return it" do
-      user = build(:user)
+      user = insert(:user)
 
       actual = Get.by_id(user.id)
 
-      expected = {:ok, user}
 
-      assert actual = expected
+      assert {:ok, %User{}} = actual
     end
   end
 end
