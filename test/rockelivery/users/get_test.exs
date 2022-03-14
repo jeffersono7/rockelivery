@@ -23,7 +23,6 @@ defmodule Rockelivery.Users.GetTest do
 
       actual = Get.by_id(user.id)
 
-
       assert {:ok, %User{}} = actual
     end
   end
