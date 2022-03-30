@@ -5,6 +5,7 @@ defmodule Rockelivery.Users.DeleteTest do
 
   alias Ecto.UUID
   alias Rockelivery.Error
+  alias Rockelivery.User
   alias Rockelivery.Users.Delete
 
   describe "call/1" do
@@ -19,13 +20,12 @@ defmodule Rockelivery.Users.DeleteTest do
     end
 
     test "when user exists, delete and return it" do
-      user = build(:user)
+      user = insert(:user)
+      user_id = user.id
 
       actual = Delete.call(user.id)
 
-      expected = {:ok, user}
-
-      assert actual = expected
+      assert {:ok, %User{id: ^user_id}} = actual
 
       assert {:error, Error.build_user_not_found_error()} == Delete.call(user.id)
     end
