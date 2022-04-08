@@ -5,8 +5,9 @@ defmodule RockeliveryWeb.UsersControllerWeb do
   import Mox
 
   alias Ecto.UUID
-  alias Rockelivery.ViaCep.ClientMock
   alias Rockelivery.User
+  alias Rockelivery.ViaCep.ClientMock
+  alias RockeliveryWeb.Auth.Guardian
 
   describe "create/2" do
     test "when all params are valid, creates the user", %{conn: conn} do
@@ -56,8 +57,18 @@ defmodule RockeliveryWeb.UsersControllerWeb do
   end
 
   describe "delete/2" do
-    test "when there is a user with the given id, deletes the user", %{conn: conn} do
-      %User{id: id} = insert(:user)
+    setup %{conn: conn} do
+      user = insert(:user)
+
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+
+      conn = put_req_header(conn, "authorization", "Bearer " <> token)
+
+      {:ok, conn: conn, user: user}
+    end
+
+    test "when there is a user with the given id, deletes the user", %{conn: conn, user: user} do
+      %User{id: id} = user
 
       response =
         conn
@@ -69,8 +80,18 @@ defmodule RockeliveryWeb.UsersControllerWeb do
   end
 
   describe "show/2" do
-    test "when there is a user with the given id, returns it", %{conn: conn} do
-      %User{id: id} = insert(:user)
+    setup %{conn: conn} do
+      user = insert(:user)
+
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn, user: user}
+    end
+
+    test "when there is a user with the given id, returns it", %{conn: conn, user: user} do
+      %User{id: id} = user
 
       response =
         conn
@@ -103,11 +124,20 @@ defmodule RockeliveryWeb.UsersControllerWeb do
   end
 
   describe "update/2" do
-    test "given there is a user, when update it with other params, return it updated", %{
-      conn: conn
-    } do
+    setup %{conn: conn} do
       user = insert(:user)
 
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+
+      conn = put_req_header(conn, "authorization", "Bearer " <> token)
+
+      {:ok, conn: conn, user: user}
+    end
+
+    test "given there is a user, when update it with other params, return it updated", %{
+      conn: conn,
+      user: user
+    } do
       params = %{age: 55}
 
       response =
