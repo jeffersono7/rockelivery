@@ -14,8 +14,7 @@ config :rockelivery, Rockelivery.Repo,
   migration_primary_key: [type: :binary_id],
   migration_foreign_key: [type: :binary_id]
 
-config :rockelivery, Rockelivery.Users.Create,
-  via_cep_adapter: Rockelivery.ViaCep.Client
+config :rockelivery, Rockelivery.Users.Create, via_cep_adapter: Rockelivery.ViaCep.Client
 
 config :rockelivery, RockeliveryWeb.Auth.Guardian,
   issuer: "rockelivery",

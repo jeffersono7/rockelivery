@@ -19,8 +19,7 @@ if System.get_env("GITHUB_ACTIONS") do
     password: "postgres"
 end
 
-config :rockelivery, Rockelivery.Users.Create,
-  via_cep_adapter: Rockelivery.ViaCep.ClientMock
+config :rockelivery, Rockelivery.Users.Create, via_cep_adapter: Rockelivery.ViaCep.ClientMock
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

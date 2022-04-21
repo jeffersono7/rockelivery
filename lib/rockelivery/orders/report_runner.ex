@@ -31,7 +31,7 @@ defmodule Rockelivery.Orders.ReportRunner do
 
     schedule_report_generation()
 
-    {:noreply, state  + 1}
+    {:noreply, state + 1}
   end
 
   def schedule_report_generation do
