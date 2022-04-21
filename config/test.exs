@@ -15,7 +15,7 @@ config :rockelivery, Rockelivery.Repo,
 # Config for github actions
 if System.get_env("GITHUB_ACTIONS") do
   config :rockelivery, Rockelivery.Repo,
-    username: "postgres"
+    username: "postgres",
     password: "postgres"
 end
 
