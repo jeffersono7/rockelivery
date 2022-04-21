@@ -5,16 +5,18 @@ defmodule Rockelivery.Orders.ReportRunner do
 
   alias Rockelivery.Orders.Report
 
-  @time 1000 * 60
+  @time 1000 * 10
 
   def start_link(_initial_state) do
-    GenServer.start_link(__MODULE__, %{})
+    GenServer.start_link(__MODULE__, 0, name: Rockelivery.Orders.ReportRunner)
   end
 
   # Server
 
   @impl true
   def init(state) do
+    Logger.info("Report runner started!")
+
     schedule_report_generation()
 
     {:ok, state}
@@ -29,7 +31,7 @@ defmodule Rockelivery.Orders.ReportRunner do
 
     schedule_report_generation()
 
-    {:noreply, state}
+    {:noreply, state  + 1}
   end
 
   def schedule_report_generation do
